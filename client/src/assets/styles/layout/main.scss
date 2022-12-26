@@ -1,0 +1,37 @@
+.main-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex: 1;
+  background: $--color-fff;
+  .bread{
+    padding-left: 10px;
+    background-color: $--color-e4e8ef;
+  }
+  .main-tabs-top{
+    height: 8px;
+    background-color:$--color-fff;
+  }
+  .main-tabs {
+    min-width: 890px;
+  }
+
+
+  .main-tabs-container {
+    padding: 20px 10px;
+    height: 100%;
+    min-width: 890px;
+    overflow: auto;
+    font-size: $--font-14;
+  }
+}
+
+// 修改日期选择器的宽度
+.main-tabs-container {
+  .ks-form-item__content {
+    .ks-date-editor,.ks-dropdown-tree {
+      width: 100%;
+    }
+    
+  }
+}

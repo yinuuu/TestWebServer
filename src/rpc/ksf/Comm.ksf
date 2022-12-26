@@ -1,0 +1,101 @@
+#include "User.ksf"
+module ksQuant
+{
+    struct Error
+    {
+        0 optional int    code;
+        1 optional string msg; //msg 和 params二选一
+    };
+    
+    //通用分页结构
+    struct Pagination
+    {
+        0 optional long offset;      // 偏移量
+        1 optional long page_size;   // 单页记录数
+        2 optional long total_count; // 总记录数
+    };
+    
+    //通用缓存记录
+    //daily_bar: level1->inst_id, level2->trade_date
+    //tick: level1->inst_id, level2->trade_date
+    struct CacheRecord
+    {
+        0 optional string         table_name;      // 表名
+        1 optional bool           cached   = true; // 是否已缓存
+        2 optional bool           updating = true; // 是否还在更新
+        3 optional vector<string> cache_index;     // 索引，updating = true时有用
+        4 optional string         level1;          // 偏移量1
+        5 optional string         level2;          // 偏移量2
+        6 optional string         level3;          // 偏移量3
+    };
+    
+    //市场事件类型
+    enum ExchangeEventType
+    {
+        BEFORE_OPEN_MARKET = 1,
+        AFTER_CLOSE_MARKET = 2,
+        SETTLE             = 3,
+    };
+    
+    //登录请求
+    struct LoginReq
+    {
+        0 optional ClientInfo client;
+        1 optional string     token;          // 客户端票据
+        2 optional string     account_id;     // 手工交易需要填入
+        3 optional string     pre_front_id;   // 客户端带上来的frontId
+        4 optional string     pre_session_id; // 客户端带上来的sessionId
+        5 optional string     now_front_id;   // 传给gateServer的本次的frontId
+        6 optional string     now_session_id; // 传给gateServer的本次的sessionId
+        7 optional long       timestamp;      // 登录时间戳，默认不填
+    };
+    
+    //登录应答
+    struct LoginRsp
+    {
+        0 optional Error  ret;        // 错误码
+        1 optional string front_id;   // 前置id
+        2 optional string session_id; // 会话id
+    };
+    
+    //登出请求
+    struct LogoutReq
+    {
+        0 optional ClientInfo client;
+        1 optional string     token;      // 客户端票据
+        2 optional string     account_id; // 手工交易需要填入
+        3 optional string     front_id;   //
+        4 optional string     session_id; // 必须填入作为判断链路的标志
+    };
+    
+    //登出应答
+    struct LogoutRsp
+    {
+        0 optional Error  ret;        // 错误码
+        1 optional string front_id;   // 前置id
+        2 optional string session_id; // 会话id
+    };
+    
+    // 日志维度用户级、策略级
+    struct RunLog
+    {
+        0 require  string id;
+        1 require  string level;
+        2 require  string module_id;
+        3 optional string run_id;
+        4 optional string strategy_id;
+        5 optional string user_id;
+        6 require  string msg;
+        7 require  long   timestamp;
+    };
+    
+    key[RunLog, id, user_id, run_id, strategy_id];
+    
+    //建表历史
+    struct CreateTableChangeHis
+    {
+        0 require string struct_name;
+        1 require string create_sql;
+        2 require long   update;
+    };
+};

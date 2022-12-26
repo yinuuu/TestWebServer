@@ -1,0 +1,295 @@
+module ksQuant
+{
+
+    /**
+     * 1. 说明定义这个表的意义，用途，适配范围，来源(聚源，行情，自己维护)，后期维护难度
+     * 2. 是否有历史变迁性
+     * 3. 单条数据大小和整体数据大小预估，考虑可以截取的数据从2011年1月1号开始，比如 交易日历数据；全量数据的，比如A股的复权数据，2011年前的复权数据你可以进行合成
+     * 4. 提供什么接口，考虑给sdk的打包接口，和服务间调用接口
+     * 5. 测速，从服务端到客户端rpc，客户端sdk取用，10w
+     */
+
+    //码表
+    struct Instrument
+    {
+        0  optional string id;                  // 证券代码(eg: IF1903.CFEX.CF, IF.CFEX)
+        1  optional string name;                // 中文名称
+        2  optional string origin_code;         // 证券默认代码
+        3  optional string origin_name;         // 证券默认名字(多语言要另外找地方)
+
+        4  optional int    e_type;              // 码表类型 InstType(a股， 期货， 期权， 品种)
+        5  optional string exchange;            // 交易所
+        6  optional string market;              // 市场类型 CS CF CO : CHINA_STOCK_MARKET->CS
+        7  optional string exchange_mic;        // 交易所mic码
+        8  optional string exchange_market;     // 交易所市场(eg: CFEX.CF/CFEX.CO)
+        9  optional string currency;            // 币种
+
+        10 optional int    tplus;               // 成交T+
+
+        11 optional bool   is_standard = false; // 是否是交易所的标准合约，比如主力合约 IFZ0.CF 就不是交易所的标准合约
+        12 optional bool   is_tradable = false; // 是否可交易代码
+        13 optional bool   is_expired  = false; // 合约的标的是否是过期
+        14 optional bool   is_set      = false;
+
+        15 optional int    list_date;           // 上市日 无则为0
+        16 optional int    de_list_date;        // 退市日 无则为0
+        17 optional string set_code;            // 集合代码
+    };
+
+    //码表变动历史
+    struct InstrumentHistory
+    {
+        0 optional Instrument inst;
+        1 optional int        change_date; //最后交易日(退市日) 无则为0
+    };
+
+    struct MainInstrument
+    {
+        0 optional string inst_id;   // 合约具体代码(eg: IF1905.CCFX.CF)
+        1 optional int    trade_day; // 交易日
+    };
+
+    struct MainInstrumentHistory
+    {
+        0 optional string         product;     // 品种(eg: IF)
+        1 optional int            change_date; // 交易日
+        2 optional MainInstrument main_ins;    // 具体合约
+    };
+
+    //A股类合约信息变动表 S
+    struct ChinaStockInstrument
+    {
+        0 optional string id;           //证券代码
+        1 optional double lot_size;     //一手数目
+        2 optional string tick_table;   //tick table的代码
+        3 optional double price_tick;   //标的价格浮动最小单位值
+        4 optional double comm_ratio;   //佣金
+        5 optional double stamp_tax;    //印花税
+        6 optional double transfer_fee; //过户费
+        7 optional double exchange_fee; //交易所规费
+        8 optional double other;        //其他手续费
+        9 optional double mini_comm;    // A股默认为最低手续费5元,期货不需要考虑
+    };
+
+    //A股类合约信息变动表 S
+    struct ChinaStockInstrumentHistory
+    {
+        0 optional ChinaStockInstrument inst;
+        1 optional int                  change_date; //变动日
+    };
+
+    //期货类合约信息变动表 F
+    struct ChinaFutureInstrument
+    {
+        0  optional string id;                   // 证券代码
+        1  optional string product_id;           // 品种(eg: IF)
+
+        2  optional string combination_type;     // 组合类型
+
+        3  optional long   max_market_order_vol; // 市价单最大下单量
+        4  optional long   min_market_order_vol; // 市价单最小下单量
+        5  optional long   max_limit_order_vol;  // 限价单最大下单量
+        6  optional long   min_limit_order_vol;  // 限价单最小下单量
+
+        7  optional double long_margin_ratio;    // 多头保证金率
+        8  optional double short_margin_ratio;   // 空头保证金率
+        9  optional double comm_ratio;           // 交易手续费
+
+        13 optional int    deliv_year;           // 交割年份
+        14 optional int    deliv_month;          // 交割月
+        15 optional int    start_deliv_date;     // 开始交割日
+        16 optional int    end_deliv_date;       // 结束交割日
+    };
+
+    // 期货类合约信息变动表 F
+    struct ChinaFutureInstrumentHistory
+    {
+        0 optional ChinaFutureInstrument inst;
+        1 optional int                   change_date;
+    };
+
+    // 期权码表
+    struct ChinaOptionInstrument
+    {
+        0  optional string id;                   // 证券代码
+        1  optional string product_id;           // 品种(eg: IF)
+
+        2  optional string combination_type;     // 组合类型
+
+        3  optional long   max_market_order_vol; // 市价单最大下单量
+        4  optional long   min_market_order_vol; // 市价单最小下单量
+        5  optional long   max_limit_order_vol;  // 限价单最大下单量
+        6  optional long   min_limit_order_vol;  // 限价单最小下单量
+
+        7  optional double long_margin_ratio;    // 多头保证金率
+        8  optional double short_margin_ratio;   // 空头保证金率
+        9  optional double comm_ratio;           // 交易手续费
+
+        13 optional int    deliv_year;           // 交割年份
+        14 optional int    deliv_month;          // 交割月
+        15 optional int    start_deliv_date;     // 开始交割日
+        16 optional int    end_deliv_date;       // 结束交割日
+    };
+
+    struct ChinaOptionInstrumentHistory
+    {
+        0 optional ChinaOptionInstrument inst;
+        1 optional int                   change_date;
+    };
+
+    struct ProductInstrument
+    {
+        0  optional string         id;                    // 品种代码
+        1  optional string         name;                  // 品种名称
+        2  optional vector<string> support_markets;       // CF|CO
+        3  optional int            e_type;                // 品种类型;ProductType 1.商品期货，2.货币期货，3.利率期货，4.股指期货, 5.虚拟货币期货
+        4  optional bool           night_trading = false; // 是否有夜盘
+
+        5  optional long           max_market_order_vol;  // 市价单最大下单量
+        6  optional long           min_market_order_vol;  // 市价单最小下单量
+        7  optional long           max_limit_order_vol;   // 限价单最大下单量
+        8  optional long           min_limit_order_vol;   // 限价单最小下单量
+
+        9  optional double         vol_multi;             // 合约数量乘数
+        10 optional double         price_tick;            // 最小变动价位
+        11 optional double         long_margin_ratio;     // 多头保证金率
+        12 optional double         short_margin_ratio;    // 空头保证金率
+        13 optional double         comm_ratio;            // 交易手续费
+        14 optional int            comm_unit;             // 交易手续费单位(CommissionUnit)
+
+        15 optional string         pos_type;              // 持仓类型 ChinaFuture_Type_
+        16 optional string         pos_date_type;         // 持仓日期类型 ChinaFuture_Data_Type
+    };
+
+    // 品种表变动历史
+    struct ProductInstrumentHistory
+    {
+        0 optional ProductInstrument inst;
+        1 optional int               change_date;
+    };
+
+    struct Exchange
+    {
+        0 optional string id;
+        1 optional string mic;
+        2 optional string origin_code;
+        3 optional string region;
+    };
+
+    // 交易所变动历史
+    struct ExchangeHistory
+    {
+        0 optional Exchange exchange;
+        1 optional int      change_date;
+    };
+
+    struct Market
+    {
+        0 optional string id;   // eg: CF
+        1 optional string name; // eg: China Future
+    };
+
+    /**
+     * 日期时间类
+     */
+
+    struct TradeDay
+    {
+        0 optional int date;
+        1 optional int flag; // TradeDayFlag
+    };
+    key[TradeDay, date];
+
+    // 一个市场的所有交易日
+    struct TradeCalendar
+    {
+        0 optional string           market;
+        1 optional vector<TradeDay> all_day; // 每一天
+    };
+
+    struct TimeSlot
+    {
+        0  optional long         open_time;                        // 相对时间
+        1  optional long         close_time;                       // 相对时间
+        2  optional long         from_time;                        // 时分秒的时间戳
+        3  optional long         to_time;                          // 时分秒的时间戳
+        4  optional int          sequence;                         // 序列号
+        5  optional unsigned int flag_bits;                        // flag位图,用于表示时间段对应的交易状态等,分别对应 TIME_SLOT_FLAG
+        10 optional map[         hashmap]<string, string> extends; // 扩展字段
+    };
+
+    struct TradeTime
+    {
+        0 optional string           inst_id;
+        1 optional vector<TimeSlot> time_slot; // 交易时间段
+    };
+
+    struct TradeTimeHistory
+    {
+        0 optional TradeTime trade_time;
+        1 optional int       change_date;
+    };
+
+    struct InstrumentTradeTime
+    {
+        // 品种交易时间段, key: inst_id: IF.CCFX.CF
+        0 optional map<string, vector<TradeTimeHistory>> trade_time_his;
+    };
+
+    //市场状态类型
+    enum TRADE_CALENDAR_SESSION_TYPE
+    {
+        TCST_OPEN         = 0, //开盘
+        TCST_CLOSE        = 1, //收盘
+        TCST_BEFORE_OPEN  = 2, //开盘前
+        TCST_AFTER_CLOSE  = 3, //收盘后
+        TCST_AFTER_OPEN   = 4, //开盘后
+        TCST_BEFORE_CLOSE = 5, //收盘前
+    };
+
+    //A股除权信息表
+    struct Xrxd
+    {
+        0 optional string inst_id;
+        1 optional int    ex_date;          // 除权除息日
+        2 optional int    regi_date;        // 股权登记日
+        3 optional double regi_close_price; // 股权登记日收盘价
+        4 optional double div_cash;         // 每股派现
+        5 optional double div_share;        // 每股送股
+        6 optional double trab_share;       // 每股公积金转增
+        7 optional double place_rate;       // 每股配股
+        8 optional double place_price;      // 配股价格
+        9 optional double ex_factor;        // 本次复权因子
+        10 optional double cuml_ex_factor;   // 累计复权因子
+        11 optional double ex_price;         // 除权报价
+        12 optional double ex_div_price;     // 除权除息报价
+        13 optional long   publish_time;     // 发布时间
+    };
+
+    struct IndexComponent
+    {
+        0 optional string id;        // 成分股代码
+        1 optional string parent_id; // 所属指数
+        2 optional int check_in;     // 检入日
+        3 optional int check_out;    // 检出日
+    };
+
+    struct IndexComponentHistory
+    {
+        0 optional IndexComponent inst;
+        1 optional int            change_date;
+    };
+
+    struct SpecialFactor
+    {
+        0 optional string inst_id;
+        1 optional string factor_key;
+        2 optional string factol_val;
+    };
+
+    struct SpecialFactorHistory
+    {
+        0 optional SpecialFactor sf;
+        1 optional int           change_date;
+    };
+};

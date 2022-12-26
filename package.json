@@ -1,0 +1,45 @@
+{
+  "name": "fu-tang-server",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node bin/starter.js",
+    "dev": "cross-env NODE_ENV=dev DEBUG=app ./node_modules/.bin/nodemon bin/starter.js",
+    "prd": "pm2 start bin/starter.js --name=futang-auth"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.18",
+    "sequelize-auto": "^0.8.8"
+  },
+  "dependencies": {
+    "@koa/multer": "^3.0.0",
+    "@ksf/rpc": "^2.0.18",
+    "@ksf/stream": "^2.0.5",
+    "axios": "^0.27.2",
+    "callsite": "^1.0.0",
+    "cluster": "^0.7.7",
+    "debug": "^4.3.4",
+    "http-proxy-middleware": "^2.0.6",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-onerror": "^4.2.0",
+    "koa-router": "^10.1.1",
+    "koa-static": "^5.0.0",
+    "koa2-connect": "^1.0.2",
+    "koa2-connect-history-api-fallback": "^0.1.3",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.3",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^2.3.3",
+    "node-xlsx": "^0.21.0",
+    "sequelize": "^6.21.2",
+    "uuid": "^8.3.2",
+    "winston": "^3.8.1",
+    "winston-daily-rotate-file": "^4.7.1"
+  }
+}

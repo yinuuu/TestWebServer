@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+      "target": "esnext", 
+      "module": "commonjs",
+      "allowSyntheticDefaultImports": true,
+      "baseUrl": "./",
+      "paths": {
+          "@/*": ["src/*"],
+          "@assets/*": ["src/assets/*"],
+          "@theme/*": ["src/themeLayout/*"],
+          "@utils/*":["src/utils/*"]
+      }
+  },
+  "exclude": [
+      "node_modules"
+  ]
+}

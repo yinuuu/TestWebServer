@@ -1,0 +1,116 @@
+
+//工具栏主题颜色
+.horizontal_head_background_dark,
+.horizontal_head_background_light,
+.standard_head_background_light,
+.mix_head_background_light{
+  .ks-dropdown {
+    color: $--color-fff;
+  }
+}
+.standard_head_background_dark,
+.mix_head_background_dark {
+  .ks-dropdown {
+    color: $--color-666;
+  }
+}
+.usertools_container {
+  font-weight: bold;
+  box-sizing: border-box;
+  position: relative;
+  height: 100%;
+  line-height: 54px;
+
+  .head-title {
+    float: left;
+    font-size: $--font-22;
+    height: 100%;
+
+    i {
+      cursor: pointer;
+      margin: 0 5px;
+      font-size: $--font-20;
+    }
+
+    span {
+      cursor: pointer;
+    }
+
+    .iconRotate {
+      transform: rotate(180deg);
+    }
+  }
+
+  .head-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 100%;
+    & > div {
+      vertical-align: middle;
+    }
+    &.is-fruity {
+      color: $--color-fff;
+      .item-name {
+        color: $--color-fff;
+      }
+    }
+
+    .info-item {
+      color: $--color-fff;
+      margin: 0 10px;
+      cursor: pointer;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    i {
+      font-size: $--font-18;
+      vertical-align: middle;
+    }
+
+    img {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .head-user {
+      span {
+        font-size: $--font-16;
+        font-weight: bold;
+      }
+    }
+
+    .head-admin {
+      display: flex;
+      align-items: center;
+      font-size: $--font-16;
+      img {
+        margin: 0 5px;
+      }
+      .user-icon{
+        display: inline-block;
+        margin-right: 5px;
+        color: $--color-fff;
+      }
+    }
+
+    .head-login {
+      margin: 0 20px;
+    }
+  }
+}
+
+.ks-dropdown-menu {
+  .ks-dropdown-menu__item {
+    line-height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+
+    .ks-color-picker {
+      height: 20px;
+      margin-left: 10px;
+    }
+  }
+}

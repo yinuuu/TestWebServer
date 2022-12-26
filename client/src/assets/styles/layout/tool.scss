@@ -1,0 +1,36 @@
+
+.toolbackground_dark{
+    background: $--color-1D3354;
+    color: $--color-fff;;
+}
+  .toolbackground_light{
+    background: $--color-primary;
+    color: $--color-fff;
+    .info-item{
+      color: $--color-fff;  
+    }
+}
+  .tools_contariner {
+    font-weight: bold;
+    box-sizing: border-box;
+    position: relative;
+    height: 100%;
+    padding: 12px 12px ;
+      .info-item {
+        cursor: pointer;
+        width: 36px;
+        text-align: center;
+        margin-bottom: 30px;
+        img{
+          width: 30px;
+        }
+        .svg-icon{
+          width: 24px;
+          height: 24px;
+        }
+        i{
+          font-size:$--font-24;
+        } 
+      }
+  }
+  

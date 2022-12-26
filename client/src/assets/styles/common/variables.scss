@@ -1,0 +1,72 @@
+/**
+*
+*  颜色申明
+*
+**/
+
+$--color-primary: #2B90FF;
+// 板块背景色调
+$block-container--bg-color: rgba($color: $--color-primary, $alpha: 0.05);
+$--color-000:#000;
+$--color-333: #333;
+$--color-555:#555;
+$--color-666: #666;
+$--color-fff:#fff;
+$--color-d8d8d8:#d8d8d8;
+$--color-f3f3f3:#f3f3f3;
+$--color-eef1f6:#eef1f6;
+$--color-2c3e50:#2c3e50;
+$--color-337ab7:#337ab7;
+$--color-20a0ff:#20a0ff;
+$--color-20b6f9:#20b6f9;
+$--color-2178f1:#2178f1;
+$--color-d0d0d0:#d0d0d0;
+$--color-d3dce6:#d3dce6;
+$--color-99a9bf:#99a9bf;
+$--color-091326:#091326;
+$--color-1e2232:#1e2232;
+$--color-BDBDBD:#BDBDBD;
+$--color-e4e8ef:#e4e8ef;
+$--color-1D3354:#1D3354;
+$--color-F08047:#F08047;
+$--color-5a5e66:#5a5e66;
+$--color-f2f2f2:#f2f2f2;
+$--color-1c65dd:#1c65dd;
+$--color-a0cfff:#a0cfff;
+$--color-e8effb:#e8effb;
+$--color-d9d9d9:#d9d9d9;
+$--color-efefef:#efefef;
+$--color-d6d6d6:#d6d6d6;
+$--color-42b983:#42b983;
+$--color-000b1d:#000b1d;
+$--color-f03b2c:#f03b2c;
+$--color-3262aa:#3262aa;
+
+/**
+*
+*  字体申明
+*
+**/
+
+// 24px字体
+$--font-24: 24px;
+// 22px字体
+$--font-22: 22px;
+// 20px字体
+$--font-20: 20px;
+// $--font-18字体
+$--font-18:18px;
+// 16px字体
+$--font-16:16px;
+// 14px字体
+$--font-14:14px;
+// 12px字体：
+$--font-12:12px;
+
+
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  theme: $--color-primary;
+}

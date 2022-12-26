@@ -1,0 +1,135 @@
+module ksQuant
+{
+    //用户属性
+    struct UserProfile
+    {
+        0  optional string              user_id;         // 用户id
+        1  optional string              nickname;        // 用户昵称
+        2  optional string              realname;        // 真实名称
+        3  optional string              card_type;       // 证件类型
+        4  optional string              card_id;         // 证件号码
+        5  optional string              mail;            // 用户邮箱
+        6  optional string              tel_no;          // 用户手机号
+        7  optional string              wechat;          // 用户微信
+        8  optional string              remark;          // 备注
+        9  optional string              individual_flag; // 0个人户 1产品户 2机构户
+        10 optional map<string, string> extra_params;    // 其他扩展参数
+    };
+    
+    struct UserAuth
+    {
+        0  optional string              user_id;          // 用户id
+        1  optional string              token;            // 用户token
+        2  optional string              salt;             // salt
+        3  optional string              user_type;        // 用户类型，A（管理用户），T（交易用户）
+        4  optional vector<string>      role_ids;         // 角色Id列表
+        5  optional string              user_status;      // 用户状态，0正常、1注销、2冻结
+        6  optional vector<string>      trade_accounts;   // 当前用户关联的用户交易账户id列表
+        7  optional string              domain_id;        // 用户的域
+        8  optional bool                mod_pass = false; // 用户是否修改过密码
+        9  optional long                reg_time;         // 注册时间，格式为时间戳
+        10 optional string              company_id;       // 所属机构
+        11 optional map<string, string> extra_params;     // 其他扩展参数
+    };
+    
+    struct UserPermission
+    {
+        0 optional string user_id;      // 用户id
+        1 optional int    max_backtest; // 最大回测数量 -1代表无限
+        2 optional int    max_simtrade; // 最大仿真数量 -1代表无限
+        3 optional int    max_realtime; // 最大实盘数量 -1代表无限
+    };
+    
+    struct UserDefinition
+    {
+        0 optional string user_id; // 用户id
+    };
+    
+    //客户端信息
+    struct ClientInfo
+    {
+        0 optional string              user_id;      // 用户ID
+        1 optional string              channel;      // 客户端渠道,CHANNEL_
+        2 optional string              guid;         // GUID信息
+        3 optional string              xua;          // 客户端UA
+        4 optional string              imei;         // IMEI
+        
+        5 optional vector<string>      accounts;     // 资金账户
+        6 optional vector<string>      macs;         // 用户mac地址
+        7 optional vector<string>      hosts;        // 客户端IP列表
+        8 optional map<string, string> extra_params; // 扩展参数
+    };
+    
+    enum eCalcType
+    {
+        ECT_NONE     = 0,
+        ECT_PLUS     = 1, //基础加值
+        ECT_MULTIPLY = 2, //基础乘值
+        ECT_ABS      = 3, //绝对值
+    };
+    
+    //用户自定义配置
+    struct UserFeeCustom
+    {
+        0 optional string inst_id;   //码表id
+        1 optional int    calc_type; //fee eCalcType
+        2 optional double value;     //fee
+    };
+    
+    struct UserMarginRateCustom
+    {
+        0 optional string inst_id;   //码表id
+        1 optional int    calc_type; //margin eCalcType
+        2 optional double value;     //margin
+    };
+    
+    struct CustomConfig
+    {
+        0 optional string                       user_id;     //用户ID
+        1 optional vector<UserFeeCustom>        fee;         //手续费
+        2 optional vector<UserMarginRateCustom> margin_rate; //保证金
+    };
+    
+    struct ConnectNode
+    {
+        0 optional string         node_id; //节点ID，目前支持gateway，basic，quote，factor
+        1 optional vector<string> connects;
+    };
+    
+    struct ClientConnectNode
+    {
+        0 optional string              user_id; //用户ID
+        1 optional vector<ConnectNode> nodes;   //节点
+    };
+    
+    struct EmailCaptcha
+    {
+        0 optional string captcha;     // 验证码
+        1 optional int    create_time; // 创建时间
+    };
+    
+    struct UserModule
+    {
+        0 optional int user_id;
+        1 optional int uni_key;
+    };
+    
+    struct User
+    {
+        0 optional string            user_id;    // 用户id
+        1 optional UserAuth          auth;       // 用户认证
+        2 optional UserProfile       profile;    // 用户资料
+        3 optional UserPermission    permission; // 用户权限
+        4 optional ClientInfo        client;     // 客户端信息
+        5 optional ClientConnectNode node;       // 节点信息
+        6 optional CustomConfig      config;     // 用户配置
+        7 optional long              create;     // 创建时间
+        8 optional long              update;     // 更新时间
+    };
+    
+    struct UserPack
+    {
+        0 optional bool is_login = false; // 是否登录
+        1 optional User user;             // 用户信息
+    };
+};

@@ -1,0 +1,269 @@
+#include "Comm.ksf"
+#include "BaseData.ksf"
+
+module ksQuant
+{
+    struct GetInstrumentsHisReq
+    {
+        0 optional vector<string> exchanges;                // CCFX.CF
+        1 optional vector<string> inst_ids;                 // IF1012.CCFX.CF
+        2 optional vector<string> product_exchange_markets; // IF.CCFX.CF，只针对期货,期权有效
+    };
+
+    struct GetInstrumentsHisRsp
+    {
+        0 optional vector<InstrumentHistory>            instHis;
+        1 optional vector<ChinaStockInstrumentHistory>  csInstHis;
+        2 optional vector<ChinaFutureInstrumentHistory> cfInstHis;
+    };
+
+    struct GetMainInstrumentHisReq
+    {
+        0 optional int last_modify_time;
+    };
+
+    struct GetMainInstrumentHisRsp
+    {
+        0 optional int                           last_modify_time;
+        1 optional vector<MainInstrumentHistory> main_ins_his;
+    };
+
+    struct InstrumentTradeRange
+    {
+        0 optional string inst_id; // IF.CCFX.CF
+        1 optional string beg;           // 开始日期(闭区间)
+        2 optional string end;           // 结束日期(开区间)
+    };
+
+    struct GetTradeCalendarReq
+    {
+        // key: InstrumentTradeRange.inst_id
+        0 optional map<string, InstrumentTradeRange> ins_range;
+    };
+
+    struct GetTradeCalendarRsp
+    {
+        0 optional map<string, TradeCalendar> trade_calendar;
+    };
+
+    struct GetTradeTimeReq
+    {
+        0 optional map<string, InstrumentTradeRange> trade_range;
+    };
+
+    struct GetTradeTimeRsp
+    {
+        0 optional InstrumentTradeTime ins_trade_time;
+    };
+
+    struct GetBasicIndexReq
+    {
+        0 optional vector<int> modules; // PACK_MODULE_TYPE
+    };
+
+    struct ModuleIndex
+    {
+        0 optional int            type;   // PACK_MODULE_TYPE
+        1 optional vector<string> indexs; // 模块对应的所有的索引
+    };
+
+    struct GetBasicIndexRsp
+    {
+        0 optional vector<ModuleIndex> module_indexs;
+    };
+
+    struct BasicProperty
+    {
+        0 optional int level1;     //指1级大类【基础码表，日历，时间，复权】对应PackModuleType
+        1 optional string level2;  //(可选)指2级大类【具体市场】, 在时间中表示品种或者合约
+        2 optional string level3;  //(可选)指3级类别【具体交易所】
+        3 optional string version; //版本号，初始为空，服务端回传记录下来
+    };
+
+    struct GetBasicPackReq
+    {
+        0 optional vector<BasicProperty> properties; //分包
+        1 optional map[hashmap]<string, string>  extends; // 扩展字段，策略段拉取数据（strategy_id）
+    };
+
+    struct BasicPack
+    {
+        0 optional BasicProperty prop; //基础数据属性
+        1 optional vector<byte>  buf;  //二进制包，根据prop.level1解析
+    };
+
+    struct GetBasicPackRsp
+    {
+        0 optional vector<BasicPack> packs;
+    };
+
+    // 对应level1 = INSTRUMENT
+    struct InstrumentPack
+    {
+        0 optional vector<InstrumentHistory> data; // 分包
+    };
+
+    // 对应level1 = INSTRUMENT_CF
+    struct CFInstrumentPack
+    {
+        0 optional vector<ChinaFutureInstrumentHistory> data; // 分包
+    };
+
+    // 对应level1 = INSTRUMENT_CO
+    struct COInstrumentPack
+    {
+        0 optional vector<ChinaOptionInstrumentHistory> data; // 分包
+    };
+
+    // 对应level1 = INSTRUMENT_PRD
+    struct PRDInstrumentPack
+    {
+        0 optional vector<ProductInstrumentHistory> data; // 分包
+    };
+
+    // 对应level1 = INSTRUMENT_CS
+    struct CSInstrumentPack
+    {
+        0 optional vector<ChinaStockInstrumentHistory> data; // 分包
+    };
+
+    // 对应level1 = CALENDAR
+    struct CalendarPack
+    {
+        0 optional vector<TradeCalendar> data; // 分包
+    };
+
+    // 对应level1 = TIME
+    struct TradeTimePack
+    {
+        0 optional vector<InstrumentTradeTime> data; // 分包
+    };
+
+    // 对应level1 = MAIN_INS
+    struct MainInsPack
+    {
+        0 optional vector<MainInstrumentHistory> data; // 分包
+    };
+
+    // 对应level1 = XRXD
+    struct XrxdPack
+    {
+        0 optional vector<Xrxd> data;
+    };
+
+    struct NeedXrxdReq
+    {
+        0 optional vector<string> inst_ids;
+        1 optional bool is_origin_code;
+        2 optional int date; // 当为0时判断今天
+    };
+
+    struct NeedXrxdRsp
+    {
+        0 optional vector<string> inst_ids;
+    };
+
+    struct GetInstrumentSetReq
+    {
+        0 optional string set_code; // eg: ETF
+        1 optional int    date;     // 当为0时判断今天
+    };
+
+    struct GetInstrumentSetRsp
+    {
+        0 optional vector<InstrumentHistory> inst_his;
+    };
+
+    struct InstDate
+    {
+        0 optional string inst_id;
+        1 optional int    date;
+    };
+
+    struct GetComponentsReq
+    {
+        0 optional vector<InstDate> inst_dates;
+    };
+
+    struct GetComponentsRsp
+    {
+        0 optional vector<IndexComponentHistory> cmpt_his;
+    };
+
+    struct GetTimeSlotReq
+    {
+        0 optional vector<InstDate> inst_dates; // 为空时则默认全品种
+    };
+
+    // 相对时间
+    struct OppositeTimeSlot
+    {
+        0 optional int  sequence;  // 1代表夜盘
+        1 optional long from_time; // 开始时间
+        2 optional long to_time;   // 结束时间
+    };
+
+    struct InstTimeSlot
+    {
+        0 optional string inst;
+        1 optional vector<OppositeTimeSlot> time_slots;
+    };
+
+    struct GetTimeSlotRsp
+    {
+        0 optional vector<InstTimeSlot> inst_time_slots;
+    };
+
+    struct GetCalendarReq
+    {
+        0 optional InstDate inst_date;
+    };
+
+    struct GetCalendarRsp
+    {
+        0 optional vector<int> trade_days;
+    };
+
+    struct GetInstSpecialFactorReq
+    {
+        0 optional vector<InstDate> inst_dates;
+    };
+
+    struct InstSpecialFactor
+    {
+        0 optional string inst_id;
+        1 optional map<string, string> sf;
+    };
+
+    struct GetInstSpecialFactorRsp
+    {
+        0 optional vector<InstSpecialFactor> sfs;
+    };
+
+    interface BasicObj
+    {
+        // 码表相关
+        Error GetInstrumentHis(GetInstrumentsHisReq req, out GetInstrumentsHisRsp rsp);
+        Error GetMainInstrumentHis(GetMainInstrumentHisReq req, out GetMainInstrumentHisRsp rsp);
+
+        // 日历相关
+        Error GetTradeCalendar(GetTradeCalendarReq req, out GetTradeCalendarRsp rsp);
+        Error GetTradeTime(GetTradeTimeReq req, out GetTradeTimeRsp rsp);
+        Error GetCalendar(GetCalendarReq req, out GetCalendarRsp rsp);
+        Error GetTimeSlot(GetTimeSlotReq req, out GetTimeSlotRsp rsp);
+
+        // 打包下发
+        Error GetBasicIndex(GetBasicIndexReq req, out GetBasicIndexRsp rsp);
+        Error GetBasicPack(GetBasicPackReq req, out GetBasicPackRsp rsp);
+
+        // 除权除息相关
+        Error NeedXrxd(NeedXrxdReq req, out NeedXrxdRsp rsp);
+
+        // 成分股相关
+        Error GetInstrumentSet(GetInstrumentSetReq req, out GetInstrumentSetRsp rsp);
+        Error GetComponents(GetComponentsReq req, out GetComponentsRsp rsp);
+
+        // 特殊参数
+        Error GetInstSpecialFactor(GetInstSpecialFactorReq req, out GetInstSpecialFactorRsp rsp);
+    };
+};

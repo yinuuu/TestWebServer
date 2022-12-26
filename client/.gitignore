@@ -1,0 +1,10 @@
+.idea
+conf/app.ini
+test_self/*
+log/*
+run/*
+/tmp
+.air.toml
+dist/
+node_modules/
+standard/

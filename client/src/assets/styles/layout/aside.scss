@@ -1,0 +1,95 @@
+
+@import '@assets/styles/common/mixin.scss';
+// 左侧导航菜单部分
+  .fade-enter-active {
+    transition: opacity 1s;
+  }
+  .fade-leave-active{
+    transition: opacity .3s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    transform: translateX(0);
+  }
+.menu-wrap {
+  height: 100%;
+  min-width: 200px;
+  float: left;
+  display: flex;
+  flex-direction: column;
+  background-color: $--color-091326;
+  &__collapse {
+    min-width: 64px;
+  }
+  .menu-img {
+    height: 54px;
+    padding: 0 10px;
+    @include flex-center;
+    box-sizing: border-box;
+    cursor: pointer;
+    .path {
+      width: 44px;
+      height: 100%;
+    }
+    color: $--color-fff;
+    .logo {
+      width: 180px;
+      height: 100%;
+    }
+  }
+  .ks-submenu__icon-arrow {
+    font-size: $--font-12;
+  }
+  .menu {
+    border: none;
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 10px;
+    background-color: rgba($--color-primary, 0.15);
+  }
+}
+
+::v-deep .menu-item-wrap {
+  .ks-menu{
+    background-color: rgba($--color-fff,0.1);
+  }
+  .ks-menu-item {
+    &:hover {
+      background-color: rgba($--color-primary, 0.5);
+    }
+  }
+  .menu-item.is-active {
+    background-color: $--color-primary;
+    }
+  }
+
+ // 收起侧边导肮菜单时的样式
+ .ks-menu--collapse {
+   .ks-submenu {
+     .ks-submenu__title {
+       span,
+       .ks-submenu__icon-arrow {
+         display: none;
+       }
+     }
+   }
+ }
+
+ .ks-menu--vertical {
+   margin-left: 5px;
+   .ks-menu--popup {
+     min-width: 150px;
+     background: $--color-1e2232;
+     .ks-menu-item {
+       height: 54px;
+       line-height: 54px;
+       color: $--color-BDBDBD;
+     }
+   }
+ }
+.ks-submenu__title,.ks-menu-item{
+   display: flex;
+   align-items: center;
+   .svg-icon{
+     margin-right:5px;
+   }
+ }
