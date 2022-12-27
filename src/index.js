@@ -6,6 +6,7 @@ const apiConf = [
     ['post', '/getInstrumentHis', BasicController.getInstrumentHis],
     ['get', '/getConfigToken', BasicController.getConfigToken],
     ['post', '/initDB', BasicController.initDB],
+    ['post', '/execShell', BasicController.execShell],
 ]
 
 module.exports = {

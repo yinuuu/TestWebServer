@@ -23,7 +23,7 @@ dbCtl.initConnectDB = async (data) => {
             } = webConf.dbConf[database]
             const { user, password, host, port} = data
             // 打印sql语句
-            const logging = process.env.NODE_ENV === "dev" ? (sqlText) => {
+            const logging = process.env.NODE_ENV !== "prod" ? (sqlText) => {
                 // console.log(sqlText);
                 // logger.sql(sqlText)
             } : true

@@ -6,14 +6,14 @@
  * @LastEditors: xin.chen
  */
 import axios from 'axios'
-import {Message} from 'kingstar-ui'
-import {removeToken} from '@utils/init/auth.js'
+import { Message } from 'kingstar-ui'
+import { removeToken } from '@utils/init/auth.js'
 import store from '@/store'
 import router from '@/router'
-import {hideLoading, showLoading} from './handle-loading'
-import {clearPendingPool} from './handle-repeat-request'
-import {handleRequest} from './handle-interceptors'
-import {handelErrMes} from './handle-error'
+import { hideLoading, showLoading } from './handle-loading'
+import { clearPendingPool } from './handle-repeat-request'
+import { handleRequest } from './handle-interceptors'
+import { handelErrMes } from './handle-error'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,

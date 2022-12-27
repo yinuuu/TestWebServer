@@ -1,10 +1,10 @@
 const conf = {
     webConf: {
-        host:'0.0.0.0',
-        port:'4123',
+        host:'localhost',
+        port:'4124',
         alter: true, // 从配置文件直接变更表结构
-        clickHouse: 'http://localhost:8123',
-        json: 'http://212.129.149.100:8200'
+        clickHouse: 'http://10.253.50.202:8123',
+        json: 'http://10.253.50.89:8200'
     },
     dbConf: {
         futang_auth: {

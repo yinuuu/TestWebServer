@@ -1,7 +1,8 @@
 const BasicService = require('../../service/basic/basicService')
-const {dbCtl} = require("../../dao/db");
-const fs = require("fs");
-const path = require("path");
+const {dbCtl} = require("../../dao/db")
+const fs = require("fs")
+const path = require("path")
+const shell = require('shelljs')
 const basicKsf = require('../../rpc/proxy/BasicObjProxy').ksQuant
 
 const BasicController = {
@@ -43,6 +44,17 @@ const BasicController = {
       } else {
         ctx.makeResponse(20000, '请输入正确的参数！', {})
       }
+    } catch (e) {
+      logger.error(e)
+      ctx.makeError()
+    }
+  },
+
+  execShell: async ctx => {
+    try {
+      const { host, port, user, password } = ctx.params
+      let code = shell.exec(`${shell.pwd()}/src/rpc/ksf/ksf2js.sh`);
+      console.log(code)
     } catch (e) {
       logger.error(e)
       ctx.makeError()

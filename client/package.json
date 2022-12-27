@@ -5,7 +5,7 @@
   "author": "ksp前端架构组",
   "scripts": {
     "dev": "vue-cli-service serve",
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js,.vue src --fix",
     "build": "vue-cli-service build",
     "preview": "node build/index.js --preview --report",
     "ssh": "node build/ssh.js"

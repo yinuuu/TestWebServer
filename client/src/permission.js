@@ -12,18 +12,18 @@ import { getToken } from '@utils/init/auth' // 获取token信息
 import getPageTitle from '@utils/tools/get-page-title'
 import store from './store'
 import initRoutes from '@utils/init/init-routes'
-import {getConfigToken} from "@/api/login"; // 动态注册路由信息
+import { getConfigToken } from '@/api/login' // 动态注册路由信息
 NProgress.configure({ showSpinner: false }) // 初始化进度条的默认设置
 
 const whiteList = ['/login', '/adminPass']
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   NProgress.start()
   document.title = getPageTitle(to.meta.title)
   const hasToken = getToken()
   if (hasToken) {
     if (to.path === '/login') {
-      next({path: '/'})
+      next({ path: '/' })
       NProgress.done()
     } else {
       const routes = store.state.permission.routes
@@ -31,12 +31,12 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         initRoutes()
-        next({...to, replace: true})
+        next({ ...to, replace: true })
       }
     }
   } else {
     /* has no token*/
-    let res = await getConfigToken();
+    const res = await getConfigToken()
     if (whiteList.indexOf(to.path) !== -1) {
       if (to.path === '/login' && !res.data.data) {
         next(`/adminPass`)

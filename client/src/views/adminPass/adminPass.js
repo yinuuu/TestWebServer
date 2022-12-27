@@ -1,8 +1,8 @@
-import Vue from 'vue';
+import Vue from 'vue'
 
-import adminPass from './adminPass.vue';
+import adminPass from './adminPass.vue'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
@@ -10,6 +10,6 @@ new Vue({
   components: {
     adminPass
   },
-  template: '<admin-pass/>',
-});
+  template: '<admin-pass/>'
+})
 

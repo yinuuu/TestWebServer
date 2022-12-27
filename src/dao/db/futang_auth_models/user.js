@@ -1,4 +1,4 @@
-const moment = require("moment")
+const dayjs = require("dayjs")
 module.exports = (sequelize, DataTypes) => sequelize.define(
     'user',
     {
@@ -29,13 +29,13 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
             type: DataTypes.DATE,
             //note here this is the guy that you are looking for
             get() {
-                return moment(this.getDataValue('create_time')).format('YYYY-MM-DD hh:mm:ss');
+                return dayjs(this.getDataValue('create_time')).format('YYYY-MM-DD hh:mm:ss');
             }
         },
         update_time: {
             type: DataTypes.DATE,
             get() {
-                return moment(this.getDataValue('update_time')).format('YYYY-MM-DD hh:mm:ss');
+                return dayjs(this.getDataValue('update_time')).format('YYYY-MM-DD hh:mm:ss');
             }
         }
     },
