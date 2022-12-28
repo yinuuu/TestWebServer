@@ -49,3 +49,10 @@ export const initDB = data => request({
   method: 'post',
   data
 })
+
+export const execShell = data => request({
+  baseURL: process.env.VUE_APP_BASE_TEST,
+  url: '/execShell',
+  method: 'post',
+  data
+})

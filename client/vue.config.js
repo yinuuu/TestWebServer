@@ -40,7 +40,7 @@ module.exports = {
         }
       },
       '/test': {
-        target: 'http://127.0.0.1:4124',
+        target: 'http://127.0.0.1:4123',
         ws: true,
         changeOrigin: true,
         pathRewrite: { // pathRewrite表示路径重写，key表示一个正则，value表示别名

@@ -1,7 +1,7 @@
 const conf = {
     webConf: {
         host:'localhost',
-        port:'4124',
+        port:'4123',
         alter: true, // 从配置文件直接变更表结构
         clickHouse: 'http://10.253.50.202:8123',
         json: 'http://10.253.50.89:8200'
@@ -24,7 +24,7 @@ const conf = {
 if(process.env.NODE_ENV === 'dev') {
     conf.webConf = {
         host:'localhost',
-        port:'4124',
+        port:'4123',
         alter: true, //从配置文件直接变更表结构
         clickHouse: 'http://10.253.50.202:8123',
         json: 'http://10.253.50.89:8200'

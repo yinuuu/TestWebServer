@@ -9,15 +9,19 @@
     <div v-if="active === 1">
       <ks-form
         ref="form"
-        class="admin_pass_page"
+        class="pass_page"
         size="large"
-        :model="formData"
+        :model="firstData"
         :rules="formRules"
         label-width="100px"
       >
         <ks-form-item>
-          <ks-button type="primary" @click="initConfig">连接</ks-button>
-          <ks-button @click="next">下一步</ks-button>
+          <ks-input v-model="firstData.input" placeholder="执行命令" style="width: 300px;margin-right: 10px"></ks-input>
+          <ks-button type="primary" @click="exec">执行脚本</ks-button>
+          <ks-button @click="next" :disabled="isNext">下一步</ks-button>
+        </ks-form-item>
+        <ks-form-item>
+          <div class="article_txt" v-html="firstData.textarea" />
         </ks-form-item>
       </ks-form>
     </div>
@@ -71,7 +75,7 @@
 </template>
 
 <script>
-import { initDB } from '@/api/login'
+import { initDB, execShell } from '@/api/login'
 import router from '@/router'
 import { isValidHostPort } from '@/utils/tools/validate'
 
@@ -104,6 +108,11 @@ export default {
     return {
       active: 1,
       isDisabled: true,
+      isNext: true,
+      firstData: {
+        input: '',
+        textarea: '脚本执行结果...'
+      },
       formData: {
         host: '10.253.50.88',
         port: '3306',
@@ -147,6 +156,18 @@ export default {
         }
       })
     },
+    async exec() {
+      let ret = await execShell({param: this.firstData.input})
+      if (ret.code === 0) {
+        this.firstData.textarea = ret.data?.replace(/\n/g, "<br>")
+        this.$message.success('脚本执行成功！')
+        this.isNext = false
+      } else {
+        this.firstData.textarea = ret.err_msg?.replace(/\n/g, "<br>")
+        this.$message.error(`脚本执行失败，err_code: ${ret.code}`)
+        this.isNext = true
+      }
+    },
     previous() {
       if (this.active === 2) {
         this.active = 1
@@ -180,5 +201,15 @@ export default {
 .ks-steps {
   margin: 60px auto;
   width: 70%;
+}
+.pass_page {
+  margin: 50px;
+}
+.article_txt {
+  border: 1px solid #dae3e8;
+  width: auto;
+  height: 540px;
+  padding: 10px;
+  overflow: auto;
 }
 </style>

@@ -52,9 +52,17 @@ const BasicController = {
 
   execShell: async ctx => {
     try {
-      const { host, port, user, password } = ctx.params
-      let code = shell.exec(`${shell.pwd()}/src/rpc/ksf/ksf2js.sh`);
-      console.log(code)
+      const { param } = ctx.params
+      let res = {}
+      if (param) {
+        res = shell.exec(`${param}`);
+        logger.info(res)
+      } else {
+        shell.cd(`${shell.pwd()}/src/rpc/ksf`)
+        res = shell.exec(`bash ksf2js.sh`);
+        logger.info(res)
+      }
+      ctx.makeResponse(res.code, res.stderr, res.stdout)
     } catch (e) {
       logger.error(e)
       ctx.makeError()
