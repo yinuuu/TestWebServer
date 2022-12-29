@@ -1,10 +1,10 @@
 const { BasicPrx } = require('../../rpc/index')
+const path = require("path");
 
 const BasicService = {
-  getInstrumentHis: async data => {
-    return await BasicPrx.GetInstrumentHis(data)
-  },
-
+  getInstrumentHis: async ctx => {
+    return await BasicPrx.GetInstrumentHis(ctx)
+  }
 }
 
 module.exports = BasicService

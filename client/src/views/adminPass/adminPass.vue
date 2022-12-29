@@ -17,7 +17,9 @@
       >
         <ks-form-item>
           <ks-input v-model="firstData.input" placeholder="执行命令" style="width: 300px;margin-right: 10px"></ks-input>
-          <ks-button type="primary" @click="exec">执行脚本</ks-button>
+          <ks-button type="primary" @click="$refs.file.click()">上传文件</ks-button>
+          <input v-show="false" ref="file" type="file" accept=".sh" @change="handleFileInput"></input>
+          <ks-button type="primary" @click="exec" style="margin-left: 10px">执行脚本</ks-button>
           <ks-button @click="next" :disabled="isNext">下一步</ks-button>
         </ks-form-item>
         <ks-form-item>
@@ -75,7 +77,7 @@
 </template>
 
 <script>
-import { initDB, execShell } from '@/api/login'
+import {initDB, execShell, uploadFile} from '@/api/login'
 import router from '@/router'
 import { isValidHostPort } from '@/utils/tools/validate'
 
@@ -155,6 +157,15 @@ export default {
           return false
         }
       })
+    },
+    async handleFileInput(e) {
+      await this.$refs.form.validate()
+      const file = e.target.files[0]
+      this.firstData.input = file.name
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('name', this.firstData.input)
+      await uploadFile(formData)
     },
     async exec() {
       let ret = await execShell({param: this.firstData.input})

@@ -50,9 +50,23 @@ export const initDB = data => request({
   data
 })
 
+// 执行shell脚本
 export const execShell = data => request({
   baseURL: process.env.VUE_APP_BASE_TEST,
   url: '/execShell',
   method: 'post',
   data
 })
+
+// 文件上传
+export function uploadFile(data) {
+  return request({
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    baseURL: process.env.VUE_APP_BASE_TEST,
+    url: '/uploadFile',
+    method: 'post',
+    data
+  })
+}

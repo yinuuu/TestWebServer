@@ -23,6 +23,7 @@
     "callsite": "^1.0.0",
     "cluster": "^0.7.7",
     "dayjs": "^1.11.7",
+    "fs-extra": "^11.1.0",
     "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",

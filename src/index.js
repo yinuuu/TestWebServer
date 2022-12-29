@@ -7,6 +7,8 @@ const apiConf = [
     ['get', '/getConfigToken', BasicController.getConfigToken],
     ['post', '/initDB', BasicController.initDB],
     ['post', '/execShell', BasicController.execShell],
+    //    上传 dat
+    ['post', '/uploadFile',BasicController.uploadFile],
 ]
 
 module.exports = {
