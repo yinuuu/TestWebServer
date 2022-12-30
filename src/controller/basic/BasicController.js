@@ -68,6 +68,7 @@ const BasicController = {
             ctx.makeError()
         }
     },
+
     uploadFile: async ctx => {
         try {
             const file = ctx.files[0]
@@ -92,7 +93,3 @@ const BasicController = {
 }
 
 module.exports = BasicController
-
-
-
-
